@@ -16,6 +16,8 @@ collaborators:
   - username: abhinavmpandey08
     permission: push
   # Reviewers
+  - username: jacobweinstock
+    permission: triage
   - username: mmlb
     permission: triage
 
