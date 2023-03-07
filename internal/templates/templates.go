@@ -93,43 +93,18 @@ tasks:
           IMG_URL: {{.ImageURL}}
           DEST_DISK: {{.DestDisk}}
           COMPRESSED: true
-      - name: "add-tink-cloud-init-config"
+      - name: "change-kernel-configuration"
         image: tinkerbell.azurecr.io/writefile:v1.0.0
         timeout: 90
         environment:
-          DEST_DISK: {{.DestPartition}}
-          FS_TYPE: ext4
-          DEST_PATH: /etc/cloud/cloud.cfg.d/10_tinkerbell.cfg
+          DEST_DISK: {{.DestDisk}}6
+          FS_TYPE: btrfs
+          DEST_PATH: /grub.cfg
           UID: 0
           GID: 0
-          MODE: 0600
-          DIRMODE: 0700
+          MODE: 0777
+          DIRMODE: 0755
           CONTENTS: |
-            datasource:
-              Ec2:
-                metadata_urls: ["{{.MetadataURL}}"]
-                strict_id: false
-            system_info:
-              default_user:
-                name: tink
-                groups: [wheel, adm]
-                sudo: ["ALL=(ALL) NOPASSWD:ALL"]
-                shell: /bin/bash
-            manage_etc_hosts: localhost
-            warnings:
-              dsid_missing_source: off
-      - name: "add-tink-cloud-init-ds-config"
-        image: tinkerbell.azurecr.io/writefile:v1.0.0
-        timeout: 90
-        environment:
-          DEST_DISK: {{.DestPartition}}
-          FS_TYPE: ext4
-          DEST_PATH: /etc/cloud/ds-identify.cfg
-          UID: 0
-          GID: 0
-          MODE: 0600
-          DIRMODE: 0700
-          CONTENTS: |
-            datasource: Ec2
+            set linux_append="$linux_append flatcar.autologin=tty1 ignition.config.url={{.MetadataURL}}/2009-04-04/user-data"
 `
 )
