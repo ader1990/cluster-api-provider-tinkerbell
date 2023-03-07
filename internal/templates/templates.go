@@ -131,12 +131,5 @@ tasks:
           DIRMODE: 0700
           CONTENTS: |
             datasource: Ec2
-      - name: "kexec-image"
-        image: tinkerbell.azurecr.io/kexec:v1.0.0
-        timeout: 90
-        pid: host
-        environment:
-          BLOCK_DEVICE: {{.DestPartition}}
-          FS_TYPE: ext4
 `
 )
